@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Job;
+use App\Models\UJob;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
@@ -12,7 +12,7 @@ class JobController extends Controller
      */
     public function index()
     {
-        //
+        return view('job.index',['jobs'=>UJob::all()]);
     }
 
     /**
@@ -34,15 +34,18 @@ class JobController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Job $job)
+    public function show(UJob $job)
     {
-        //
+       
+
+        return view('job.show',compact('job'));
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Job $job)
+    public function edit(UJob $job)
     {
         //
     }
@@ -50,7 +53,7 @@ class JobController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Job $job)
+    public function update(Request $request, UJob $job)
     {
         //
     }
@@ -58,7 +61,7 @@ class JobController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Job $job)
+    public function destroy(UJob $job)
     {
         //
     }
