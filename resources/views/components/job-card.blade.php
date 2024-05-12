@@ -6,22 +6,21 @@
     </div>
     <div class="flex items-center justify-between mb-4 text-sm text-slate-600">
         <div class="flex space-x-1">
-            <div>Company Name,</div>
+            <div>{{$job->employer->company_name}},</div>
             <div>{{ $job->location }}</div>
         </div>
         <div class="flex space-x-1 text-sm">
             <x-tag>
-                {{ Str::ucfirst($job->experience) }}
+                <a
+                    href="{{ route('jobs.index', ['experience' => $job->experience]) }}">{{ Str::ucfirst($job->experience) }}</a>
+
             </x-tag>
             <x-tag>
-                {{ $job->category }}
+                <a href="{{ route('jobs.index', ['category' => $job->category]) }}"> {{ $job->category }}</a>
+
             </x-tag>
 
         </div>
     </div>
-    <p class="mb-3 text-sm text-slate-500">
-        {!! nl2br(e($job->description)) !!}
-    </p>
-
-    {{$slot}}
+    {{ $slot }}
 </x-card>

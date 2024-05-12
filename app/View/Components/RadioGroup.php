@@ -6,20 +6,19 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class TextInput extends Component
+class RadioGroup extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(
-        public ?string $value = null,
-        public ?string $name = null,
-        public ?string $placeholder = null,
-        public ?string $formRef=null,
-        public ?string $text='text',
-
-    ) {
+    public function __construct(public string $name, public array $options)
+    {
         //
+    }
+
+    public function optionsWithLabels() : array
+    {
+        return array_is_list($this->options) ? array_combine($this->options, $this->options) : $this->options;
     }
 
     /**
@@ -27,6 +26,6 @@ class TextInput extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.text-input');
+        return view('components.radio-group');
     }
 }

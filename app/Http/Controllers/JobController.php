@@ -3,16 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Models\UJob;
+use Illuminate\Contracts\Queue\Job;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('job.index',['jobs'=>UJob::all()]);
+        $filters = $request->only(
+            'search',
+            'min_salary',
+            'max_salary',
+            'experience',
+            'category'
+        );
+
+        //  dd($filters);
+        // $job->when(request('search'), function ($query) {
+
+        //     $query->where(function ($query) {
+        //         $query->where('title', 'like', '%' . request('search') . '%')
+        //             ->orWhere('description', 'like', '%' . request('search') . '%');
+        //     });
+        // })->when(request('min_salary'), function ($query) {
+        //     $query->where('salary', '>=', request('min_salary'));
+        // })->when(request('max_salary'), function ($query) {
+        //     $query->where('salary', '<=', request('max_salary'));
+        // })->when(request('experience'),function($query){
+        //     $query->where('experience',request('experience'));
+        // })->when(request('category'),function($query){
+        //     $query->where('category',request('category'));
+        // });
+
+        return view('job.index', ['jobs' => UJob::with('employer')->filter($filters)->get()]);
     }
 
     /**
@@ -20,7 +47,7 @@ class JobController extends Controller
      */
     public function create()
     {
-        //
+       
     }
 
     /**
@@ -36,10 +63,9 @@ class JobController extends Controller
      */
     public function show(UJob $job)
     {
-       
 
-        return view('job.show',compact('job'));
 
+        return view('job.show', ['job'=>$job->load('employer.ujobs')]);
     }
 
     /**
