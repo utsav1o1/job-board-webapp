@@ -6,6 +6,7 @@ use App\Models\UJob;
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class JobController extends Controller
 {
@@ -13,7 +14,9 @@ class JobController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
+    {  
+
+        Gate::authorize('viewAny', UJob::class);
         $filters = $request->only(
             'search',
             'min_salary',
@@ -39,7 +42,7 @@ class JobController extends Controller
         //     $query->where('category',request('category'));
         // });
 
-        return view('job.index', ['jobs' => UJob::with('employer')->filter($filters)->get()]);
+        return view('job.index', ['jobs' => UJob::with('employer')->latest()->filter($filters)->get()]);
     }
 
     /**
@@ -63,7 +66,7 @@ class JobController extends Controller
      */
     public function show(UJob $job)
     {
-
+        Gate::authorize('view',$job);
 
         return view('job.show', ['job'=>$job->load('employer.ujobs')]);
     }

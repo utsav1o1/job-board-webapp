@@ -29,39 +29,52 @@ class JobPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->employer !== null;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, UJob $uJob): bool
+    public function update(User $user, UJob $job): bool
     {
-        return false;
+        if ($job->employer->user_id !== $user->id) {
+            return false;
+        }
+
+        if ($job->jobApplications()->count() > 0) {
+            return Response::deny('Cannot change the job with applications');
+        }
+
+        return true;
+    }
+
+    public function viewAnyEmployer(User $user): bool
+    {
+        return true;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, UJob $uJob): bool
+    public function delete(User $user, UJob $job): bool
     {
-        return false;
+        return $job->employer->user_id === $user->id;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, UJob $uJob): bool
+    public function restore(User $user, UJob $job): bool
     {
-        return false;
+        return $job->employer->user_id === $user->id;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, UJob $uJob): bool
+    public function forceDelete(User $user, UJob $job): bool
     {
-        return false;
+        return $job->employer->user_id === $user->id;
     }
 
 

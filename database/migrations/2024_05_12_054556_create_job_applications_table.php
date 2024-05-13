@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(UJob::class)->constrained();
             $table->unsignedInteger('expected_salary');
+            $table->string('cv_path')->nullable();
             $table->timestamps();
         });
     }

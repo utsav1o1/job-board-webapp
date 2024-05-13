@@ -13,6 +13,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class UJob extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'location',
+        'salary',
+        'description',
+        'experience',
+        'category'
+    ];
+    
     public static array $experience = ['entry', 'indermediate', 'senior'];
     public static array $category = ['IT', 'Finance', 'Sales', 'Marketing'];
 
